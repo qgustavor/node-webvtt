@@ -47,8 +47,8 @@ Foo
 1
 `;
 
-    (() => { parse(input); })
-      .should.throw(parserError, /Cue identifier cannot be standalone/);
+    parse(input).should.have.property('valid').be.false;
+    parse(input).errors[0].should.be.an.instanceof(parserError);
   });
 
   it('should fail parsing cue with identifier but no timestamp', () => {
@@ -57,8 +57,8 @@ Foo
 1
 a`;
 
-    (() => { parse(input); })
-      .should.throw(parserError, /needs to be followed by timestamp/);
+    parse(input).should.have.property('valid').be.false;
+    parse(input).errors[0].should.be.an.instanceof(parserError);
   });
 
   it('should fail parsing cue with illegal timestamp', () => {
@@ -68,8 +68,8 @@ a`;
 0 --> 0
 a`;
 
-    (() => { parse(input); })
-      .should.throw(parserError, /Invalid cue timestamp/);
+    parse(input).should.have.property('valid').be.false;
+    parse(input).errors[0].should.be.an.instanceof(parserError);
   });
 
   it('should fail parsing cue with no min in timestamp', () => {
@@ -78,8 +78,8 @@ a`;
 00:00.001 --> 00:00.000
 a`;
 
-    (() => { parse(input); })
-      .should.throw(parserError, /Start timestamp greater than end/);
+    parse(input).should.have.property('valid').be.false;
+    parse(input).errors[0].should.be.an.instanceof(parserError);
   });
 
   it('should parse cue with legal timestamp and id', () => {
@@ -155,8 +155,8 @@ b`;
 00:00:00.000 --> 00:00:00.000
 a`;
 
-    (() => { parse(input); })
-      .should.throw(parserError, /End must be greater than start/);
+    parse(input).should.have.property('valid').be.false;
+    parse(input).errors[0].should.be.an.instanceof(parserError);
   });
 
   it('should parse cue with trailing lines', () => {
